@@ -1,5 +1,4 @@
 from CellSystem import CellSystem
-
 cellSystem = CellSystem()
 
 def setup(): 

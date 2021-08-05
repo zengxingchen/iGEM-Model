@@ -13,7 +13,6 @@ class GlucoseSystem:
         for glu in self.gluList:
             glu.update()
 
-
     def check(self, cell, sensor):
         num = 0
         for glu in self.gluList:

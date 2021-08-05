@@ -1,11 +1,13 @@
 from CellSystem import CellSystem
 
 cellSystem = CellSystem()
+
 def setup(): 
     size(1600,1200)
+    frameRate(40)
+    # create font object for print info on the screen 
     global f
     f = createFont("Arial",14,True)
-    frameRate(40)
     
 def draw():
     background(248,248,255)
@@ -13,9 +15,26 @@ def draw():
     cellSystem.update()
     cellSystem.check()
     if frameCount % 40 == 0:  #Call one every 40 framesy
-        cellSystem.addGlusOut()
+        cellSystem.add_glu_out()
     if frameCount % 240 == 0: #Call one every 240 frames
-        cellSystem.addVp()
+        cellSystem.protein_system.add(cellSystem.sensor_system.sensor_list[1].position, type = 'VP16')
+    drawText()
+
+    
+# Add Glucose particles
+def mousePressed():
+    if ((PVector.dist(PVector(mouseX, mouseY), cellSystem.cell.position) <= cellSystem.cell.r) and 
+        (PVector.dist(PVector(mouseX, mouseY), cellSystem.sensor_system.sensor_list[0].position) >= cellSystem.sensor_system.sensor_list[0].r)):
+        cellSystem.add_glu_in(PVector(mouseX, mouseY))
+
+# Switch the blue light     
+def keyPressed():
+    if key == "b" or key == "B":
+        cellSystem.cell.switch_light()
+
+
+# Print the legend notes and the info of elements on the screen
+def drawText():
     textFont(f,14)
     fill(0,255,255)
     text("GluSensor",570,400)
@@ -23,6 +42,7 @@ def draw():
     text("insR",790,200)
     text("insR",390,600)
     text("insR",1190,600)
+    
     noStroke()
     fill(204, 102, 0)
     ellipse(width - 200, height/2 + 200, 20, 20)
@@ -45,15 +65,6 @@ def draw():
     text("insulin",width - 150,height/2 + 100)
     fill(0,191,255)
     text("Press B or b for blue light",width - 200,height/2 + 50)
-
-def mousePressed():
-    if ((PVector.dist(PVector(mouseX, mouseY), cellSystem.cell.position) <= cellSystem.cell.r) and 
-        (PVector.dist(PVector(mouseX, mouseY), cellSystem.sensorList[0].position) >= cellSystem.sensorList[0].r)):
-        cellSystem.addGlusIn(PVector(mouseX, mouseY))
-        
-def keyPressed():
-    if key == "b" or key == "B":
-        cellSystem.SwitchChange()
         
         
         

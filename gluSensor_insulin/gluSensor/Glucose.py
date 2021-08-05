@@ -1,56 +1,59 @@
 from Sensor import Sensor
 from Cell import Cell
 import random
+
 class Glucose:
-    def __init__(self, position, velocity, acceleration, mass, topSpeed, maxforce, r, inCell, quadrant,lifespan):
-        # some attributes have not been used(mass, inCell, quadrant)
-        # inCell = 1 means that the particle is in the cell
+    def __init__(self, position, velocity, acceleration, mass, top_speed, maxforce, r, in_cell, lifespan):
+        # some attributes have not been used(mass, in_cell)
+        # in_cell = 1 means that the particle is in the cell
         self.position = position 
         self.velocity = velocity
         self.acceleration = acceleration
         self.mass = mass
-        self.topSpeed = topSpeed
+        self.top_speed = top_speed
         self.maxforce = maxforce
         self.r = r
-        self.inCell = inCell
-        self.quadrant = quadrant
+        self.in_cell = in_cell
         self.lifespan = lifespan
         self.alreadyBeFound = False
         self.status = 0
     
     def update(self):
         self.velocity.add(self.acceleration)
-        self.velocity.limit(self.topSpeed)
+        self.velocity.limit(self.top_speed)
         self.position.add(self.velocity)
         self.acceleration.mult(0)
         if(self.status == 1):
             self.lifespan -= 1
         
-    
+    def display(self):
+        noStroke()
+        fill(64,124 + self.lifespan, 205) if self.in_cell else fill(64, 124, 205)
+        ellipse(self.position.x, self.position.y, self.r, self.r)
+
     def displayOut(self):
         noStroke()
-        fill(64,124, 205)
+        fill(64, 124, 205)
         ellipse(self.position.x, self.position.y, self.r, self.r)
-        
-    
+
     def displayIn(self):
         noStroke()
         fill(64,124 + self.lifespan, 205)
         ellipse(self.position.x, self.position.y, self.r, self.r)
     
-    def checkCellEdges(self, cell):
+    def check_cell_edge(self, cell):
         if PVector.dist(self.position, cell.position) > cell.r:
             self.velocity.x *= random.uniform(-0.5,-2)
             self.velocity.y *= random.uniform(-0.5,-2)
             self.lifespan -= 10
     
-    def checkSensor(self, sensor):
+    def check_sensor(self, sensor):
         if PVector.dist(self.position, sensor.position) < sensor.r:
             self.velocity = PVector(0,0)
             self.acceleration = PVector(0,0)
             self.status = 1
     
-    def checkEdges(self):
+    def check_edge(self):
         if self.position.x < 0 or self.position.x > width - 250:
             self.velocity.x *= -1
             self.velocity.y *= 1
@@ -58,9 +61,9 @@ class Glucose:
             self.velocity.y *= -1
             self.velocity.x *= 1
             
-    def checkInCell(self, cell):
+    def check_in_cell(self, cell):
         if PVector.dist(self.position, cell.position) < cell.r:
-            self.inCell = 1
+            self.in_cell = 1
             
         
     # there is sth wrong with the logic of beFound Funtion 

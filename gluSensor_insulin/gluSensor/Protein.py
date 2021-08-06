@@ -1,6 +1,6 @@
 import random
 class Protein:
-    def __init__(self, position, velocity, acceleration, mass, top_speed, maxforce, in_cell, quadrant,lifespan, type, r = 20):#GAL4:type = 0 VP16 type = 1 complex type = 2;insulin: type = 3
+    def __init__(self, position, velocity, acceleration, mass, top_speed, maxforce, in_cell, quadrant,lifespan, type, r = 20,spin = 100):
         # some attributes have not been used(mass, in_cell, quadrant)
         self.position = position 
         self.velocity = velocity
@@ -13,6 +13,7 @@ class Protein:
         self.quadrant = quadrant
         self.lifespan = lifespan
         self.type = type
+        self.spin = spin
         
     def update(self):
         self.velocity.add(self.acceleration)
@@ -25,26 +26,41 @@ class Protein:
             self.r = 20
             noStroke()
             fill(204, 102, 0)
-            ellipse(self.position.x, self.position.y, self.r, self.r)
+            ellipse(self.position.x, self.position.y, self.r, self.r - 5)
         elif self.type == "VP16":
             self.r = 20
             noStroke()
             fill(255, 182, 193)
-            ellipse(self.position.x, self.position.y, self.r, self.r)
+            ellipse(self.position.x, self.position.y, self.r, self.r - 5)
+            
         elif self.type == "Complex":
-            self.r = 30
+            self.r = 20
             noStroke()
-            fill(255 , 20, 147)
-            ellipse(self.position.x, self.position.y, self.r, self.r)
+            fill(204, 102, 0)
+            ellipse(self.position.x - 5, self.position.y, self.r, self.r - 5)
+            fill(255, 182, 193)
+            ellipse(self.position.x + 5, self.position.y, self.r, self.r - 5)
+            # fill(255 , 20, 147)
+            # ellipse(self.position.x, self.position.y, self.r, self.r)
         elif self.type == "insulin":
+            self.spin -= 0.01
             self.r = 20/1.732
             noStroke()
             fill(255, 140, 0)
+            x1 = self.position.x + self.r * cos(radians(100 * self.spin))
+            y1 = self.position.y + self.r * sin(radians(100 * self.spin))
+            x2 = self.position.x + self.r * cos(radians(120 + 100 * self.spin))
+            y2 = self.position.y + self.r * sin(radians(120 + 100 * self.spin))        
+            x3 = self.position.x + self.r * cos(radians(240 + 100 * self.spin))
+            y3 = self.position.y + self.r * sin(radians(240 + 100 * self.spin))
             beginShape()
-            vertex(self.position.x,self.position.y - 11.54)
-            vertex(self.position.x - 10,self.position.y + 5.78)
-            vertex(self.position.x + 10,self.position.y + 5.78)
+            vertex(x1, y1)
+            vertex(x2, y2)
+            vertex(x3, y3)
             endShape(CLOSE)
+            fill(255,255,255)
+            
+            
     
     def check_cell_edge(self, cell):
         if self.in_cell == 1 and PVector.dist(self.position, cell.position) >= cell.r:

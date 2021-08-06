@@ -49,9 +49,9 @@ class CellSystem:
             self.sensor_system.sensor_list[0].set_num(0)
 
         for ins in self.protein_system.protein_list:
-            if ins.type == "insulin" and ins.inCell == 1:
+            if ins.type == "insulin" and ins.in_cell == 1:
                 for glu in self.glucose_system.gluList:
-                    if glu.inCell == 1 and PVector.dist(glu.position, ins.position) <= 30:
+                    if glu.in_cell == 1 and PVector.dist(glu.position, ins.position) <= 30:
                         glu.lifespan -= 1
 
     def add_gal4(self, position):

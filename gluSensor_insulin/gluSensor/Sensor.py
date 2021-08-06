@@ -31,8 +31,12 @@ class Sensor:
                 144 * (1 - project(self.glu_num)), 255 * (1 - project(self.glu_num)))
             ellipse(self.position.x, self.position.y, self.d, self.d)
         elif self.type == "vp16_sensor":
-            fill(148, 0, 211)
-            ellipse(self.position.x, self.position.y, self.d, self.d)
+            # fill(148, 0, 211)
+            # ellipse(self.position.x, self.position.y, self.d, self.d) # 
+            fill(124, 255, 157)
+            arc(self.position.x, self.position.y, 30, 30, HALF_PI, PI + HALF_PI)
+            arc(self.position.x, self.position.y + 15, 60, 60, PI + HALF_PI, 2 * PI)
+            arc(self.position.x + 15, self.position.y + 15, 30, 30, 0, PI)
         elif self.type == "nucleus":
             fill(255, 69, 0)
             ellipse(self.position.x, self.position.y, self.d, self.d)

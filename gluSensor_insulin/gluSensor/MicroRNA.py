@@ -4,13 +4,15 @@ class MicroRNA:
     def __init__(self, position):
         self.position = position
         self.velocity = PVector(random.uniform(-1.0,1.0),random.uniform(-1.0,1.0)) 
-
         # self.acceleration = PVector(random.uniform(-1.0,1.0),random.uniform(-1.0,1.0))
         self.top_speed = 1
         self.r = 20
         self.status = 0
         self.spin = 100
         self.time = 200
+        self.start = self.position
+        self.end = None
+
 
     def set_status(self, status):
         self.status = status
@@ -24,7 +26,8 @@ class MicroRNA:
         if(self.time == 0):
             self.velocity = PVector(0,0)
 
-        
+    
+    
     def display(self):
         x = self.position.x 
         y = self.position.y
@@ -35,6 +38,7 @@ class MicroRNA:
             line(x + 6, y - 3, x + 9, y)
             x = x + 9
             y = y 
+        self.end = PVector.add(self.position, PVector(90, 0))
 
             
     def check_cell_edge(self, cell):

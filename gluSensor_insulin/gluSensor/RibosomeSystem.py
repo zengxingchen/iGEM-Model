@@ -16,4 +16,8 @@ class RibosomeSystem:
     def check(self, cell):
         for ribo in self.ribosome_list:
             ribo.check_cell_edge(cell)
-            ribo.check_edge()    
+
+    def translate(self, protein_system):
+        for ribo in self.ribosome_list:
+                ribo.translate(protein_system)
+        

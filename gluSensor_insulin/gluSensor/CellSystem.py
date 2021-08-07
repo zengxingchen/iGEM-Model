@@ -29,6 +29,9 @@ class CellSystem:
         self.ribosome_system.update(self.protein_system.mrna_list)
         if self.cell.light:
             self.protein_system.compound()
+        
+        # TODO: actually, it's inappropriate to place translate() here
+        self.translate()
 
     def display(self):
         """
@@ -47,9 +50,8 @@ class CellSystem:
         self.ribosome_system.check(self.cell)
         self.protein_system.check(self.cell, self.sensor_system.sensor_list[0])
         self.add_insulin(self.sensor_system.sensor_list[2].position.get())
-
         if(self.sensor_system.sensor_list[0].get_num() >= 20):
-            self.add_gal4(self.sensor_system.sensor_list[0].position.get())
+            self.add_mrna(self.sensor_system.sensor_list[0].position.get())
             self.sensor_system.sensor_list[0].set_num(0)
 
         for ins in self.protein_system.protein_list:
@@ -58,8 +60,15 @@ class CellSystem:
                     if glu.in_cell == 1 and PVector.dist(glu.position, ins.position) <= 30:
                         glu.lifespan -= 1
 
-    def add_gal4(self, position):
+    def translate(self):
+        self.ribosome_system.translate(self.protein_system)
+
+
+    def add_mrna(self, position):
         self.protein_system.add_mrna(position)
+
+    def add_gal4(self, position):
+        self.protein_system.add(position, type="Gal4")
 
     def add_insulin(self, position):
         for complex in self.protein_system.protein_list:
@@ -68,7 +77,7 @@ class CellSystem:
                 complex.velocity = PVector(0, 0)
                 complex.acceleration = PVector(0, 0)
                 complex.lifespan = complex.lifespan - 20
-
+                
     def add_glu_in(self, position):
         self.glucose_system.add(num = 50, in_cell = 1)
 

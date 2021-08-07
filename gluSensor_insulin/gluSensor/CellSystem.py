@@ -3,7 +3,7 @@ from GlucoseSystem import GlucoseSystem
 from ProteinSystem import ProteinSystem
 from SensorSystem import SensorSystem
 from ReceptorSystem import ReceptorSystem
-
+from RibosomeSystem import RibosomeSystem
 from InsulinReceptor import InsulinReceptor
 import random
 
@@ -15,6 +15,7 @@ class CellSystem:
         self.sensor_system = SensorSystem()
         self.glucose_system = GlucoseSystem()
         self.protein_system = ProteinSystem()
+        self.ribosome_system = RibosomeSystem()
 
     def update(self):
         """
@@ -25,6 +26,7 @@ class CellSystem:
         self.glucose_system.update()
         self.sensor_system.update()
         self.protein_system.update()
+        self.ribosome_system.update(self.protein_system.mrna_list)
         if self.cell.light:
             self.protein_system.compound()
 
@@ -37,10 +39,12 @@ class CellSystem:
         self.receptor_system.display()
         self.glucose_system.display()
         self.protein_system.display()
+        self.ribosome_system.display()
 
     def check(self):
         num = self.glucose_system.check(self.cell, self.sensor_system.sensor_list[0])
         self.sensor_system.sensor_list[0].add_num(num)
+        self.ribosome_system.check(self.cell)
         self.protein_system.check(self.cell, self.sensor_system.sensor_list[0])
         self.add_insulin(self.sensor_system.sensor_list[2].position.get())
 
@@ -55,7 +59,7 @@ class CellSystem:
                         glu.lifespan -= 1
 
     def add_gal4(self, position):
-        self.protein_system.add(position, type="Gal4")
+        self.protein_system.add_mrna(position)
 
     def add_insulin(self, position):
         for complex in self.protein_system.protein_list:

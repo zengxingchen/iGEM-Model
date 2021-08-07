@@ -32,7 +32,6 @@ class Protein:
             noStroke()
             fill(255, 182, 193)
             ellipse(self.position.x, self.position.y, self.r, self.r - 5)
-            
         elif self.type == "Complex":
             self.r = 20
             noStroke()
@@ -60,8 +59,6 @@ class Protein:
             endShape(CLOSE)
             fill(255,255,255)
             
-            
-    
     def check_cell_edge(self, cell):
         if self.in_cell == 1 and PVector.dist(self.position, cell.position) >= cell.r:
             self.velocity.x *= random.uniform(-0.5,-2)

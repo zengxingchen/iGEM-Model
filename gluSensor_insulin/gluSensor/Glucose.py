@@ -77,7 +77,6 @@ class Glucose:
         if PVector.dist(self.position, cell.position) < cell.r:
             self.in_cell = 1
             
-        
     # there is sth wrong with the logic of beFound Funtion 
     def beFound(self, sensor):
         if PVector.dist(self.position, sensor.position) <= (sensor.r) and self.alreadyBeFound == False:

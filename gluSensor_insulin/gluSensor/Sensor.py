@@ -2,7 +2,7 @@ class Sensor:
     """
     Attributes:
         type: A flag var indicating the type of the sensor. 
-              Gal4 if type is 0 or VP16 if type is 1 or nucleus if type is 2
+              it has 3 certain values {"gal4_sensor", "vp16_sensor", "nucleus"}
         glu_num: An integer count of the glucose particles we have produced
         r: the radius of the sensor
         d: the diameter of the sensor
@@ -40,8 +40,6 @@ class Sensor:
         elif self.type == "nucleus":
             fill(255, 69, 0)
             ellipse(self.position.x, self.position.y, self.d, self.d)
-    
-    
 
     def update(self):
         pass

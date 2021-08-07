@@ -55,6 +55,7 @@ def drawText():
     text("Complex",width - 150,height/2 + 300)
     fill(64,124, 205)
     ellipse(width - 200,height/2 + 150,10,10)
+    # draw the glucose
     glu_r = 7
     x1 = width - 200 + glu_r * cos(radians(0))
     y1 = height/2 + 150 + glu_r * sin(radians(0))

@@ -1,16 +1,23 @@
 from Protein import Protein
+from MicroRNA import MicroRNA
 import random
 class ProteinSystem:
     def __init__(self):
-        self.protein_list = [] # all kinds of proteins list
+        self.protein_list = []
+        self.mrna_list = []
     
     def display(self):
         for pro in self.protein_list:
             pro.display()
+        for mrna in self.mrna_list:
+            mrna.display()
             
     def update(self):
         for pro in self.protein_list:
             pro.update()
+        
+        for mrna in self.mrna_list:
+            mrna.update()
             
     def check(self, cell, sensor):
         for pro in self.protein_list:
@@ -18,6 +25,14 @@ class ProteinSystem:
             pro.check_edge()    
             if pro.protein_dead():
                 self.protein_list.remove(pro)
+
+        for mrna in self.mrna_list:
+            mrna.check_cell_edge(cell)
+            mrna.check_edge()  
+
+    def add_mrna(self, position):
+        mrna = MicroRNA(position)
+        self.mrna_list.append(mrna)
 
     def add(self, position, type):
         """

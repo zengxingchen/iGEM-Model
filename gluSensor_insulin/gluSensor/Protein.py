@@ -1,20 +1,16 @@
 import random
 class Protein:
-    def __init__(self, position, velocity, acceleration, mass, top_speed, maxforce, in_cell, quadrant,lifespan, type, r = 20,spin = 100):
-        # some attributes have not been used(mass, in_cell, quadrant)
+    def __init__(self, position,type):
         self.position = position 
-        self.velocity = velocity
-        self.acceleration = acceleration
-        self.mass = mass
-        self.top_speed = top_speed
-        self.maxforce = maxforce
-        self.r = r
-        self.in_cell = in_cell if type != 'insulin' else random.randint(0,2)
-        self.quadrant = quadrant
-        self.lifespan = lifespan
+        self.velocity = PVector(random.uniform(-1.0,1.0),random.uniform(-1.0,1.0))
+        self.acceleration = PVector(0,0)
+        self.top_speed = 1
+        self.r = 20
+        self.in_cell = 1 if type != 'insulin' else random.randint(0,2)
+        self.lifespan = 100
         self.type = type
-        self.spin = spin
-        
+        self.spin = 100
+
     def update(self):
         self.velocity.add(self.acceleration)
         self.velocity.limit(self.top_speed)
@@ -39,8 +35,6 @@ class Protein:
             ellipse(self.position.x - 5, self.position.y, self.r, self.r - 5)
             fill(255, 182, 193)
             ellipse(self.position.x + 5, self.position.y, self.r, self.r - 5)
-            # fill(255 , 20, 147)
-            # ellipse(self.position.x, self.position.y, self.r, self.r)
         elif self.type == "insulin":
             self.spin -= 0.01
             self.r = 20/1.732

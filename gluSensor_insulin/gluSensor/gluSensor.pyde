@@ -19,7 +19,6 @@ def draw():
         cellSystem.protein_system.add(cellSystem.sensor_system.sensor_list[1].position, type = 'VP16')
     drawText()
 
-    
 # Add Glucose particles
 def mousePressed():
     if ((PVector.dist(PVector(mouseX, mouseY), cellSystem.cell.position) <= cellSystem.cell.r) and 
@@ -30,7 +29,6 @@ def mousePressed():
 def keyPressed():
     if key == "b" or key == "B":
         cellSystem.cell.switch_light()
-
 
 # Print the legend notes and the info of elements on the screen
 def drawText():

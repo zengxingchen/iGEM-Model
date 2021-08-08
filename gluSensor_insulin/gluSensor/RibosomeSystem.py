@@ -4,10 +4,16 @@ class RibosomeSystem:
         self.ribosome_list = []
         self.ribosome_list.append(Ribosome(600, 600))
 
-    def update(self, mrna_list):
+    def update(self, protein_system):
         for ribo in self.ribosome_list:
             ribo.update()
-            ribo.follow(mrna_list)
+            if ribo.free_time <= 0:
+                ribo.find_mrna(protein_system.mrna_list)
+                if ribo.mrna and ribo.status == 0:
+                    ribo.seek(ribo.mrna.start)
+                elif ribo.mrna and ribo.status == 1:
+                    ribo.seek(ribo.mrna.end)
+                    ribo.translate(protein_system)
 
     def display(self):
         for ribo in self.ribosome_list:
@@ -16,8 +22,3 @@ class RibosomeSystem:
     def check(self, cell):
         for ribo in self.ribosome_list:
             ribo.check_cell_edge(cell)
-
-    def translate(self, protein_system):
-        for ribo in self.ribosome_list:
-                ribo.translate(protein_system)
-        

@@ -26,12 +26,10 @@ class CellSystem:
         self.glucose_system.update()
         self.sensor_system.update()
         self.protein_system.update()
-        self.ribosome_system.update(self.protein_system.mrna_list)
+        self.ribosome_system.update(self.protein_system)
         if self.cell.light:
             self.protein_system.compound()
         
-        # TODO: actually, it's inappropriate to place translate() here
-        self.translate()
 
     def display(self):
         """
@@ -59,10 +57,6 @@ class CellSystem:
                 for glu in self.glucose_system.gluList:
                     if glu.in_cell == 1 and PVector.dist(glu.position, ins.position) <= 30:
                         glu.lifespan -= 1
-
-    def translate(self):
-        self.ribosome_system.translate(self.protein_system)
-
 
     def add_mrna(self, position):
         self.protein_system.add_mrna(position)

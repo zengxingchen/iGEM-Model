@@ -4,7 +4,6 @@ class Ribosome:
         """
         Args: mrna: the mRNA the Ribosome is going to translate
               target: the destination, we have two possible values {mrna.start, mrna.end}
-              
         """
         self.position = PVector(x, y)
         self.velocity = PVector(random.uniform(-1, 1), random.uniform(-1, 1))
@@ -12,9 +11,8 @@ class Ribosome:
         self.r = 15
         self.max_speed = 1
         self.mrna = None
-        self.target = None
         self.status = 0
-        self.flag = 1
+        self.free_time = 0
 
     def update(self):
         self.velocity.add(self.acceleration)
@@ -34,57 +32,52 @@ class Ribosome:
     def apply_force(self, force):   
         # We could add mass here if we want A = F / M
         self.acceleration.add(force)
-
-    # def translate(self):
-    #     if(self)
-    #     pass
-
-    # A method that calculates and applies a steering force towards a target
-    # STEER = DESIRED MINUS VELOCITY
+ 
     def seek(self, target):
         """
-        DESCR: the core idea of the method is to use vector' subtraction of change the velocity
+        DESCR: the core idea of the method is to use vector' subtraction to change the velocity
                every frame, so finally we can get to the destination we expected
+        Hint:
         """
-        desired = PVector.sub(target, self.position)
-        # PVector.mag() returns the magnitude of the vector
-        distance = desired.mag()
+        desired = PVector.sub(target.get(), self.position)
+        distance = desired.mag() # returns the magnitude of the vector
         if (distance == 0):
             return
-        # Normalize desired and scale to maximum speed
         desired.normalize()
         desired.mult(self.max_speed)
         steer = PVector.sub(desired, self.velocity)
-        if (distance < 20): # Reduce speed to prevent shock
+        if (distance < 20): # reduce speed to prevent shock
             steer = PVector.mult(steer, 0.1)
         self.apply_force(steer)
+
         if (distance < 1): # we have closely reached the start of mrna, now we changed our destination
-            self.target = self.mrna.end
             self.status = 1
-            self.maxspeed = 0.5
 
     def translate(self, protein_system):
-        if(self.check() and self.flag == 1):
+        if(self.check()):
             protein_system.add(position = self.mrna.end, type = "Gal4")
-            self.flag = 0
+            self.reset()
+            
+
+    def reset(self):
+        self.mrna.status = 0
+        self.mrna = None
+        self.velocity = PVector(random.uniform(-1, 1), random.uniform(-1, 1))
+        self.free_time += 500
 
     def check(self):
-        if(self.target):
-            distance = PVector.sub(self.target, self.position)
+        distance = PVector.sub(self.mrna.end, self.position)
         if(self.status == 1 and distance.mag() < 1):
             return True
-
-    def follow(self, mrna_list):
-        if self.target is None:
-            for mrna in mrna_list:
-                if mrna.status == 0 and self.target is None: # mRNA is free 
-                    self.mrna = mrna
-                    self.target = mrna.start
-                    self.seek(self.target)
-                    break
         else:
-            self.seek(self.target) 
-                # self.produce()
+            return False
+
+    def find_mrna(self, mrna_list):
+        for mrna in mrna_list:
+            if mrna.status == 0: # mRNA is free
+                self.mrna = mrna
+                break
+
   
 
     def check_cell_edge(self, cell):

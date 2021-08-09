@@ -28,7 +28,6 @@ class ProteinSystem:
 
         for mrna in self.mrna_list:
             mrna.check_cell_edge(cell)
-            mrna.check_edge()  
 
     def add_mrna(self, position):
         mrna = MicroRNA(position)
@@ -39,8 +38,7 @@ class ProteinSystem:
         Args: 
             type: the protein type, like "Gal4", "VP16", "Complex", "insulin"
         """
-        protein = Protein(position = position.get(), velocity = PVector(random.uniform(-1.0,1.0),random.uniform(-1.0,1.0)), 
-                    acceleration = PVector(0,0), mass = 0, top_speed = 1, maxforce = 0, in_cell = 1, quadrant = 0, lifespan = 100, type = type)
+        protein = Protein(position = position.get(), type = type)
         self.protein_list.append(protein)
     
     def compound(self):

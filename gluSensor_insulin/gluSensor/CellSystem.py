@@ -15,7 +15,7 @@ class CellSystem:
         self.sensor_system = SensorSystem()
         self.glucose_system = GlucoseSystem()
         self.protein_system = ProteinSystem()
-        self.ribosome_system = RibosomeSystem()
+        self.ribosome_system = RibosomeSystem(self.cell)
 
     def update(self):
         """

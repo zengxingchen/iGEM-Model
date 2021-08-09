@@ -1,11 +1,11 @@
 import random
 class Ribosome:
-    def __init__(self, position):
+    def __init__(self, x, y):
         """
         Args: mrna: the mRNA the Ribosome is going to translate
               target: the destination, we have two possible values {mrna.start, mrna.end}
         """
-        self.position = position
+        self.position = PVector(x, y)
         self.velocity = PVector(random.uniform(-1, 1), random.uniform(-1, 1))
         self.acceleration = PVector(0, 0) # Ribosome has no initial acceleration
         self.r = 15
@@ -19,8 +19,7 @@ class Ribosome:
         self.velocity.limit(self.max_speed)
         self.position.add(self.velocity)
         self.acceleration.mult(0) # reset the velocity
-        if(self.free_time > 0):
-            self.free_time -= 1
+        self.free_time -= 1
         
     def display(self):
         """

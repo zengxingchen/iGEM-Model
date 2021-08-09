@@ -23,6 +23,7 @@ class MicroRNA:
         self.time =  self.time - 1
         if(self.time == 0):
             self.velocity = PVector(0,0)
+        self.end = PVector.add(self.position, PVector(90, 0))
     
     def display(self):
         x = self.position.x 

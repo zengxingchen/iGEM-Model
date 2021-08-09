@@ -1,6 +1,6 @@
 import random
 class Protein:
-    def __init__(self, position,type):
+    def __init__(self, position, type):
         self.position = position 
         self.velocity = PVector(random.uniform(-1.0,1.0),random.uniform(-1.0,1.0))
         self.acceleration = PVector(0,0)

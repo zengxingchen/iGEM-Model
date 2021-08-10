@@ -4,7 +4,8 @@ class RibosomeSystem:
     def __init__(self, cell):
         self.ribosome_list = []
         for i in range(5):
-            self.ribosome_list.append(Ribosome(PVector.add(cell.position, PVector(cell.r * random.uniform(-1,1), cell.r * random.uniform(-1,1)))))
+            self.ribosome_list.append(Ribosome(PVector.add(cell.position, PVector(cell.r * random.uniform(-0.5,0.5), cell.r * random.uniform(-0.5,0.5)))))
+
 
     def update(self, protein_system):
         for ribo in self.ribosome_list:
@@ -19,6 +20,8 @@ class RibosomeSystem:
                     elif ribo.status == 1:
                         ribo.seek(ribo.mrna.end)
                         ribo.translate(protein_system)
+        
+        
 
     def display(self):
         for ribo in self.ribosome_list:
@@ -27,3 +30,6 @@ class RibosomeSystem:
     def check(self, cell):
         for ribo in self.ribosome_list:
             ribo.check_cell_edge(cell)
+
+
+    

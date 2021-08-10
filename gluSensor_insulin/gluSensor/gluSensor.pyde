@@ -2,7 +2,7 @@ from CellSystem import CellSystem
 cellSystem = CellSystem()
 
 def setup(): 
-    size(1600,1200)
+    size(1000,7500)
     frameRate(40)
     # create font object for print info on the screen 
     global f
@@ -19,6 +19,7 @@ def draw():
         cellSystem.protein_system.add(cellSystem.sensor_system.sensor_list[1].position, type = 'VP16')
     drawText()
 
+    
 # Add Glucose particles
 def mousePressed():
     if ((PVector.dist(PVector(mouseX, mouseY), cellSystem.cell.position) <= cellSystem.cell.r) and 
@@ -30,16 +31,20 @@ def keyPressed():
     if key == "b" or key == "B":
         cellSystem.cell.switch_light()
 
+
 # Print the legend notes and the info of elements on the screen
 def drawText():
     textFont(f,14)
     fill(0,255,255)
     text("GluSensor",570,400)
     text("Nucleus",880,600)
-    text("insR",790,200)
-    text("insR",390,600)
-    text("insR",1190,600)
     
+    
+    noStroke()
+    fill(204,204,0)
+    ellipse(width - 200,height/2, 15, 15)
+    ellipse(width - 200,height/2 + 0.5 * 15, 25, 15)
+    text("Ribosome",width - 150,height/2)
     noStroke()
     fill(204, 102, 0)
     ellipse(width - 200, height/2 + 200, 20, 15)
@@ -47,8 +52,9 @@ def drawText():
     fill(255, 182, 193)
     ellipse(width - 200, height/2 + 250, 20, 15)
     text("VP16",width - 150,height/2 + 250)
-    fill(255 , 20, 147)
+    fill(204, 102, 0)
     ellipse(width - 200, height/2 + 300, 20, 15)
+    fill(255, 182, 193)
     ellipse(width - 200 + 10, height/2 + 300, 20, 15)
     text("Complex",width - 150,height/2 + 300)
     fill(64,124, 205)

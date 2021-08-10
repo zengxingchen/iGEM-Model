@@ -1,46 +1,43 @@
 import random
-class Ribosome:
+class miRNA:
     def __init__(self, position):
-        """
-        Args: mrna: the mRNA the Ribosome is going to translate
-              target: the destination, we have two possible values {mrna.start, mrna.end}
-              
-        """
-        
         self.position = position
         self.velocity = PVector(random.uniform(-1, 1), random.uniform(-1, 1))
-        self.acceleration = PVector(0, 0) # Ribosome has no initial acceleration
-        self.r = 15
+        self.acceleration = PVector(0, 0) # miRNA has no initial acceleration
+        self.r = 20
         self.max_speed = 1
         self.mrna = None
-        self.status = 0     #Identify its status: status = 0:ribosome is free,takes a random walk
-        self.free_time = 0  # after a translation gives a free_time:takes a random walk
-        
+        self.status = 0
+        self.start = self.position
+        self.end = PVector.add(self.position, PVector(45, 0))
 
+        
+        
     def update(self):
         self.velocity.add(self.acceleration)
         self.velocity.limit(self.max_speed)
         self.position.add(self.velocity)
         self.acceleration.mult(0) # reset the velocity
-        if(self.free_time > 0):
-            self.free_time -= 1
+        self.end = PVector.add(self.position, PVector(45, 0))
+        
+    def display(self):    
+        x = self.position.x 
+        y = self.position.y
+        num = 5             # change the lenth of mRNA
+        strokeWeight(2)     # Change the thickness and color of the lines
+        stroke(144,238,144)
+        for i in range(num):
+            line(x, y, x + 3, y + 3)
+            line(x + 3, y + 3, x + 6, y - 3)
+            line(x + 6, y - 3, x + 9, y)
+            x = x + 9
+            y = y
         
         
-        
-    def display(self):
-        """
-        draw the Ribosome
-        """
-        noStroke()
-        fill(204,204,0)
-        ellipse(self.position.x,self.position.y, self.r, self.r)
-        ellipse(self.position.x,self.position.y + 0.5 * self.r, 25, 15)
-
     def apply_force(self, force):   
         # We could add mass here if we want A = F / M
         self.acceleration.add(force)
-
-    # A method that calculates and applies a steering force towards a target
+        
     # STEER = DESIRED MINUS VELOCITY
     def seek(self, target):
         """
@@ -51,7 +48,7 @@ class Ribosome:
         # PVector.mag() returns the magnitude of the vector
         distance = desired.mag()
         if (distance == 0):
-            return
+            return 
         # Normalize desired and scale to maximum speed
         desired.normalize()
         desired.mult(self.max_speed)
@@ -60,23 +57,13 @@ class Ribosome:
             steer = PVector.mult(steer, 0.1)
         self.apply_force(steer)
         if (distance < 1): # we have closely reached the start of mrna, now we changed our destination
-            self.target = self.mrna.end
+            self.velocity = PVector(0,0)
+            self.acceleration = PVector(0,0)
             self.status = 1
-            self.maxspeed = 0.5
-
-    def translate(self, protein_system):
-        if(self.check()):
-            protein_system.add(position = self.mrna.end, type = "Gal4")
-            self.reset()
-
-    def reset(self):   # after a translation:reset the ribosome's attribute 
-        self.mrna.status_ribosome = 0
-        self.mrna = None
-        self.status = 0
-        self.velocity = PVector(random.uniform(-1, 1), random.uniform(-1, 1))
-        self.free_time += 200
-    
-    
+            return True
+            
+        
+        
     def check(self):
         distance = PVector.sub(self.mrna.end, self.position)
         if(self.status == 1 and distance.mag() < 1):
@@ -87,15 +74,22 @@ class Ribosome:
         
     def find_mrna(self, mrna_list):
         for mrna in mrna_list:
-            if mrna.status_ribosome == 0: # mRNA is free
+            if mrna.status_mirna == 0:  # mRNA is free
                 self.mrna = mrna
-                self.mrna.status_ribosome = 1
+                self.mrna.status_mirna = 1
                 break
-  
-
+              
+        
+    
     def check_cell_edge(self, cell):
-        if PVector.dist(self.position, cell.position) >= cell.r:
+        # check the cell_edge with both the start_position and end_position of the miRNA 
+        if PVector.dist(self.position, cell.position) >= cell.r or PVector.dist(self.end, cell.position) >= cell.r:
             self.velocity.x *= random.uniform(-0.5,-2)
             self.velocity.y *= random.uniform(-0.5,-2)
-
-    
+            
+            
+            
+            
+        
+        
+        

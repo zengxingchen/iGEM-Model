@@ -3,7 +3,7 @@ from Cell import Cell
 import random
 
 class Glucose:
-    def __init__(self, position, velocity, acceleration, mass, top_speed, maxforce, r, in_cell, lifespan,spin = 100):
+    def __init__(self, position, velocity, acceleration, mass, top_speed, maxforce, r, in_cell, lifespan, spin = 100):
         # some attributes have not been used(mass, in_cell)
         # in_cell = 1 means that the particle is in the cell
         # spin is Rotation parameters
@@ -19,6 +19,14 @@ class Glucose:
         self.spin = spin
         self.alreadyBeFound = False
         self.status = 0
+        self.target = None
+        self.glut = None
+        self.glut_id = None
+        self.dist_target = 10000
+        self.through_glut = False
+        self.change_state = False
+        
+        
     
     def update(self):
         self.velocity.add(self.acceleration)
@@ -53,6 +61,46 @@ class Glucose:
         vertex(x6, y6)
         endShape(CLOSE)
     
+    
+    def apply_force(self, force):
+        self.acceleration.add(force)
+    
+    def seek(self, target):
+        # for debug
+        fill(0,0,0)
+        ellipse(target.x, target.y, 10, 10)
+        
+        desired = PVector.sub(target, self.position)
+        distance = desired.mag()
+        self.dist_target = distance
+        if distance == 0:
+            return
+        desired.normalize()
+        desired.mult(self.top_speed)
+        steer = PVector.sub(desired, self.velocity)
+        if distance < 20:
+            steer = PVector.mult(steer, 0.1)
+        self.apply_force(steer)
+        if distance < 1:
+            self.target = self.glut.end
+            self.top_speed = 0.5
+            
+    def follow(self, glut_list, glut_threshold):
+        min_dist = 10000
+        if self.glut == None:
+            for glut in glut_list:
+                if PVector.dist(glut.position, self.position) <= glut_threshold:
+                    self.glut = glut
+                    self.target = glut.start
+                    break
+        # maybe have bot found the glut considering distance
+        if self.glut != None:
+            self.seek(self.target)
+    
+    
+    
+    
+    
     def check_cell_edge(self, cell):
         if PVector.dist(self.position, cell.position) > cell.r:
             self.velocity.x *= random.uniform(-0.5,-2)
@@ -73,10 +121,18 @@ class Glucose:
             self.velocity.y *= -1
             self.velocity.x *= 1
             
-    def check_in_cell(self, cell):
+    def check_in_cell(self, cell, glut_list):
         if PVector.dist(self.position, cell.position) < cell.r:
             self.in_cell = 1
             
+            
+    def check_cell_out_edge(self, cell):
+        if PVector.dist(self.position, cell.position) < cell.r + 10:
+            self.velocity.x *= random.uniform(-0.5,-2)
+            self.velocity.y *= random.uniform(-0.5,-2)
+      
+            
+                              
     # there is sth wrong with the logic of beFound Funtion 
     def beFound(self, sensor):
         if PVector.dist(self.position, sensor.position) <= (sensor.r) and self.alreadyBeFound == False:

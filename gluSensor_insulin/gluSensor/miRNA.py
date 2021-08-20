@@ -77,6 +77,7 @@ class miRNA:
             if mrna.status_mirna == 0:  # mRNA is free
                 self.mrna = mrna
                 self.mrna.status_mirna = 1
+                self.mrna.status_ribosome = 1
                 break
               
         

@@ -9,8 +9,8 @@ import random
 
 
 class CellSystem:
-    def __init__(self, cellR=400, cellThick=15, cellPosition=PVector(800, 600), sensorR=40, sensorPosition=PVector(650, 600)):
-        self.cell = Cell(cellR, cellThick, cellPosition)
+    def __init__(self, cellR=400, cell_Thick=15, sensorR=40):
+        self.cell = Cell(cellR, cell_Thick)
         self.receptor_system = ReceptorSystem()
         self.sensor_system = SensorSystem()
         self.glucose_system = GlucoseSystem()

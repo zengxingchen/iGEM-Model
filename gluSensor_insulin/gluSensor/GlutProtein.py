@@ -1,7 +1,11 @@
+from Cell import Cell
 class GlutProtein:
-    def __init__(self, theta,):
+    # global Width, Height
+    # Width = 1600
+    # Height = 1200
+    def __init__(self, theta):
         self.theta = theta
-        self.position = PVector(800 + (400 + 15 / 3.5) * cos(radians(theta)), 600 + (400 + 15 / 3.5) * sin(radians(theta)))
+        self.position = PVector(Cell.sketch_Width/2 + (Cell.r + 15 / 3.5) * cos(radians(theta)), Cell.sketch_Height/2 + (Cell.r + 15 / 3.5) * sin(radians(theta)))
         gap = PVector(40 * cos(radians(theta)), 40 * sin(radians(theta)))
         self.start = PVector.add(self.position, gap)
         self.end = PVector.sub(self.position, gap)

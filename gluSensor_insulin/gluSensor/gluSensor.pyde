@@ -2,7 +2,7 @@ from CellSystem import CellSystem
 cellSystem = CellSystem()
 
 def setup(): 
-    size(1000,7500)
+    size(1600,1000)
     frameRate(40)
     # create font object for print info on the screen 
     global f
@@ -36,8 +36,8 @@ def keyPressed():
 def drawText():
     textFont(f,14)
     fill(0,255,255)
-    text("GluSensor",570,400)
-    text("Nucleus",880,600)
+    text("GluSensor",3*width/8 - 30, height/3)
+    text("Nucleus",9*width/16 - 25, height/2)
     
     
     noStroke()

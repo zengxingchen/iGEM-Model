@@ -1,4 +1,6 @@
 class Sensor:
+
+
     """
     Attributes:
         type: A flag var indicating the type of the sensor. 
@@ -31,16 +33,24 @@ class Sensor:
                 144 * (1 - project(self.glu_num)), 255 * (1 - project(self.glu_num)))
             ellipse(self.position.x, self.position.y, self.d, self.d)
         elif self.type == "vp16_sensor":  
-            fill(124, 255, 157)
+            fill(80, 183, 62)
             arc(self.position.x, self.position.y, 30, 30, HALF_PI, PI + HALF_PI)
             arc(self.position.x, self.position.y + 15, 60, 60, PI + HALF_PI, 2 * PI)
             arc(self.position.x + 15, self.position.y + 15, 30, 30, 0, PI)
         elif self.type == "nucleus":
-            fill(255, 69, 0)
+            fill(211, 189, 8)
             ellipse(self.position.x, self.position.y, self.d, self.d)
+            fill(225, 198, 65)
+            ellipse(self.position.x, self.position.y, 0.2 * self.d, 0.2 * self.d )
+            ellipse(self.position.x + 0.35 * self.d, self.position.y, 0.2 * self.d, 0.2 * self.d )
+            ellipse(self.position.x - 0.35 * self.d, self.position.y, 0.2 * self.d, 0.2 * self.d )
+            ellipse(self.position.x + 0.2 * self.d, self.position.y + 0.35 * self.d, 0.2 * self.d, 0.2 * self.d )
+            ellipse(self.position.x + 0.2 * self.d, self.position.y - 0.35 * self.d, 0.2 * self.d, 0.2 * self.d )
+            ellipse(self.position.x - 0.2 * self.d, self.position.y + 0.35 * self.d, 0.2 * self.d, 0.2 * self.d )
+            ellipse(self.position.x - 0.2 * self.d, self.position.y - 0.35 * self.d, 0.2 * self.d, 0.2 * self.d )
         elif self.type == "TRE":
-            fill(186,85,211)
-            ellipse(self.position.x, self.position.y, self.d, self.d)
+            fill(186, 35, 114)
+            ellipse(self.position.x, self.position.y, self.d / 0.618, self.d)
 
     def update(self):
         pass

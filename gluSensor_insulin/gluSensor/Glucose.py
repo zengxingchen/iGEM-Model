@@ -39,7 +39,7 @@ class Glucose:
     def display(self):
         self.spin -= 0.01
         noStroke()
-        fill(64,124 + self.lifespan, 205) if self.in_cell else fill(64, 124, 205)
+        fill(244,164 + 20, 96) if self.in_cell else fill(244, 164, 96)
         x1 = self.position.x + self.r * cos(radians(100 * self.spin))
         y1 = self.position.y + self.r * sin(radians(100 * self.spin))
         x2 = self.position.x + self.r * cos(radians(60 + 100 * self.spin))

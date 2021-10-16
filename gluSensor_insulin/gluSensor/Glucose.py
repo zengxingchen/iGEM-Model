@@ -1,3 +1,4 @@
+
 from Sensor import Sensor
 from Cell import Cell
 import random
@@ -39,7 +40,7 @@ class Glucose:
     def display(self):
         self.spin -= 0.01
         noStroke()
-        fill(64,124 + self.lifespan, 205) if self.in_cell else fill(64, 124, 205)
+        fill(157 + 0.56 * self.lifespan, 149 - 0.44 * self.lifespan, 151 - 0.22 * self.lifespan ) if self.in_cell else fill(213, 105, 129)
         x1 = self.position.x + self.r * cos(radians(100 * self.spin))
         y1 = self.position.y + self.r * sin(radians(100 * self.spin))
         x2 = self.position.x + self.r * cos(radians(60 + 100 * self.spin))
@@ -67,9 +68,7 @@ class Glucose:
     
     def seek(self, target):
         # for debug
-        fill(0,0,0)
-        ellipse(target.x, target.y, 10, 10)
-        
+
         desired = PVector.sub(target, self.position)
         distance = desired.mag()
         self.dist_target = distance

@@ -1,6 +1,6 @@
 import random
 class Protein:
-    def __init__(self, position, velocity, acceleration, mass, top_speed, maxforce, in_cell, quadrant,lifespan, type, r = 20,spin = 100):
+    def __init__(self, position, velocity, acceleration, mass, top_speed, maxforce, in_cell, quadrant,lifespan, type, status, r = 20,spin = 100):
         # some attributes have not been used(mass, in_cell, quadrant)
         self.position = position 
         self.velocity = velocity
@@ -13,6 +13,7 @@ class Protein:
         self.quadrant = quadrant
         self.lifespan = lifespan
         self.type = type
+        self.status = status   # status = 1:activate
         self.spin = spin
         
     def update(self):
@@ -25,26 +26,31 @@ class Protein:
         if self.type == "Gal4":
             self.r = 20
             noStroke()
-            fill(204, 102, 0)
+            fill(231, 118, 92)
             ellipse(self.position.x, self.position.y, self.r, self.r - 5)
         elif self.type == "VP16":
             self.r = 20
             noStroke()
-            fill(255, 182, 193)
-            ellipse(self.position.x, self.position.y, self.r, self.r - 5)
+            if self.status == 1:
+                fill(70, 140, 153)
+                ellipse(self.position.x, self.position.y, self.r, self.r - 5)
+            else:
+                fill(127, 204, 212)
+                ellipse(self.position.x, self.position.y, self.r, self.r - 5)
         elif self.type == "Complex":
             self.r = 20
             noStroke()
-            fill(204, 102, 0)
+            fill(70, 140, 153)
             ellipse(self.position.x - 5, self.position.y, self.r, self.r - 5)
-            fill(255, 182, 193)
+            fill(231, 118, 92)
             ellipse(self.position.x + 5, self.position.y, self.r, self.r - 5)
             
         elif self.type == "insulin":
             self.spin -= 0.01
             self.r = 20/1.732
             noStroke()
-            fill(255, 140, 0)
+            fill(255, 160, 0)
+            
             x1 = self.position.x + self.r * cos(radians(100 * self.spin))
             y1 = self.position.y + self.r * sin(radians(100 * self.spin))
             x2 = self.position.x + self.r * cos(radians(120 + 100 * self.spin))

@@ -29,10 +29,12 @@ class CellSystem:
         self.sensor_system.update()
         self.protein_system.update()
         self.glut_system.update()
+        self.protein_system.compound()
         self.ribosome_system.update(self.protein_system)
-        if self.cell.light:
-            self.protein_system.compound()
-        
+        if self.cell.light and frameCount % 160 == 0: #This function is called every four seconds
+            self.protein_system.activate_vp()
+        elif self.cell.light == 0 and frameCount % 160 == 0:
+            self.protein_system.inactivate_vp()
        
         
 
@@ -49,15 +51,18 @@ class CellSystem:
         self.ribosome_system.display()
 
     def check(self):
-        num = self.glucose_system.check(self.cell, self.sensor_system.sensor_list[0], self.glut_system.glut_list)
-        self.sensor_system.sensor_list[0].add_num(num)
+        num = self.glucose_system.check(self.cell, self.sensor_system.sensor_list[1], self.glut_system.glut_list)
+        self.sensor_system.sensor_list[1].set_num(num)
         self.ribosome_system.check(self.cell)
-        self.protein_system.check(self.cell, self.sensor_system.sensor_list[3])
-        self.add_insulin(self.sensor_system.sensor_list[2].position.get())
-        if(self.sensor_system.sensor_list[0].get_num() >= 20):
-            self.add_mrna(self.sensor_system.sensor_list[0].position.get())
-            self.sensor_system.sensor_list[0].set_num(0)
-            
+        self.protein_system.check(self.cell, self.sensor_system.sensor_list[3], self.glucose_system)
+        self.add_insulin(self.sensor_system.sensor_list[0].position.get())
+        if (self.sensor_system.sensor_list[1].get_num() >= 80 and 
+            frameCount % (40 * (10 - ((self.sensor_system.sensor_list[1].get_num() % 70) / 10))) == 0 and 
+                self.protein_system.count_protein_num(type = "VP16", status = 0) <= 20 and 
+                    self.protein_system.count_mrna_num() <= 10):
+            self.add_mrna(self.sensor_system.sensor_list[1].position.get())
+
+    
 
         for ins in self.protein_system.protein_list:
             if ins.type == "insulin" and ins.in_cell == 1:
@@ -65,7 +70,11 @@ class CellSystem:
                     if glu.in_cell == 1 and PVector.dist(glu.position, ins.position) <= 30:
                         glu.lifespan -= 0.5
 
-   
+    def count_protein_num(self, type, status):
+        return self.protein_system.count_protein_num(type = type, status = status)
+    
+    def count_glucose_num(self, in_cell):
+        return self.glucose_system.count_num(in_cell = in_cell)
 
 
     def add_mrna(self, position):
@@ -74,12 +83,12 @@ class CellSystem:
     
 
     def add_gal4(self, position):
-        self.protein_system.add(position, type="Gal4")
+        self.protein_system.add(position, type="Gal4", status = 0)
 
     def add_insulin(self, position):
         for complex in self.protein_system.protein_list:
-            if complex.type == "Complex" and PVector.dist(self.sensor_system.sensor_list[2].position, complex.position) <= self.sensor_system.sensor_list[2].r:
-                self.protein_system.add(position, type="insulin")
+            if complex.type == "Complex" and PVector.dist(self.sensor_system.sensor_list[0].position, complex.position) <= self.sensor_system.sensor_list[0].r:
+                self.protein_system.add(position, type="insulin", status = 0)
                 complex.velocity = PVector(0, 0)
                 complex.acceleration = PVector(0, 0)
                 complex.lifespan = complex.lifespan - 20
@@ -87,5 +96,5 @@ class CellSystem:
     def add_glu_in(self, position):
         self.glucose_system.add(num = 50, in_cell = 1)
 
-    def add_glu_out(self):
-        self.glucose_system.add(num = 2, in_cell = 0)
+    def add_glu_out(self, num):
+        self.glucose_system.add(num = num, in_cell = 0)

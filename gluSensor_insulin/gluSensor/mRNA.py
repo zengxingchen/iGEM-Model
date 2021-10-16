@@ -9,7 +9,7 @@ class mRNA:
         self.r = 20
         self.status_mirna = 0      # Identify its status: status_mirna = 0:mRNA is free. It can be a target for miRNA
         self.status_ribosome = 0   # Identify its status: status_ribosome = 0:mRNA is free. It can be a target for ribosome
-        self.time = 100            # motion time,When the motion time is zero, it stops
+        self.time = 300            # motion time,When the motion time is zero, it stops
         self.start = self.position
         self.end = PVector.add(self.position, PVector(90, 0))
 
@@ -35,7 +35,7 @@ class mRNA:
         y = self.position.y
         num = 10            # Change the lenth of mRNA
         strokeWeight(2)     # Change the thickness and color of the lines
-        stroke(151,255,255)
+        stroke(101, 219, 205)
         for i in range(num):
             line(x, y, x + 3, y + 3)
             line(x + 3, y + 3, x + 6, y - 3)

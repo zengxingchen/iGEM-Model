@@ -32,7 +32,8 @@ class Ribosome:
         draw the Ribosome
         """
         noStroke()
-        fill(204,204,0)
+        
+        fill(66, 148, 147)
         ellipse(self.position.x,self.position.y, self.r, self.r)
         ellipse(self.position.x,self.position.y + 0.5 * self.r, 25, 15)
 
@@ -66,7 +67,7 @@ class Ribosome:
 
     def translate(self, protein_system):
         if(self.check()):
-            protein_system.add(position = self.mrna.end, type = "Gal4")
+            protein_system.add(position = self.mrna.end, type = "Gal4", status = 0)
             self.reset()
 
     def reset(self):   # after a translation:reset the ribosome's attribute 
@@ -87,7 +88,7 @@ class Ribosome:
         
     def find_mrna(self, mrna_list):
         for mrna in mrna_list:
-            if mrna.status_ribosome == 0: # mRNA is free
+            if mrna.status_ribosome == 0 and mrna.status_mirna == 0: # mRNA is free
                 self.mrna = mrna
                 self.mrna.status_ribosome = 1
                 break

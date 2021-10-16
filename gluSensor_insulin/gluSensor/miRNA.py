@@ -74,7 +74,7 @@ class miRNA:
         
     def find_mrna(self, mrna_list):
         for mrna in mrna_list:
-            if mrna.status_mirna == 0:  # mRNA is free
+            if mrna.status_mirna == 0 and mrna.status_ribosome == 0:  # mRNA is free
                 self.mrna = mrna
                 self.mrna.status_mirna = 1
                 self.mrna.status_ribosome = 1

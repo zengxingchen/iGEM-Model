@@ -10,7 +10,6 @@ class RibosomeSystem:
     def update(self, protein_system):
         for ribo in self.ribosome_list:
             ribo.update()
-            print(ribo.status,ribo.free_time)
             if ribo.free_time <= 0:
                 if ribo.mrna is None:
                     ribo.find_mrna(protein_system.mrna_list) # in some cases, there is no free mrna

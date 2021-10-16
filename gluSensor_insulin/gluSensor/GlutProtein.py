@@ -1,11 +1,8 @@
 from Cell import Cell
 class GlutProtein:
-    # global Width, Height
-    # Width = 1600
-    # Height = 1200
     def __init__(self, theta):
         self.theta = theta
-        self.position = PVector(Cell.sketch_Width/2 + (Cell.r + 15 / 3.5) * cos(radians(theta)), Cell.sketch_Height/2 + (Cell.r + 15 / 3.5) * sin(radians(theta)))
+        self.position = PVector(Cell.sketch_Width/2 + (Cell.r + Cell.thick / 3.5) * cos(radians(theta)), Cell.sketch_Height/2 + (Cell.r + Cell.thick / 3.5) * sin(radians(theta)))
         gap = PVector(40 * cos(radians(theta)), 40 * sin(radians(theta)))
         self.start = PVector.add(self.position, gap)
         self.end = PVector.sub(self.position, gap)
@@ -17,8 +14,8 @@ class GlutProtein:
         translate(self.position.x, self.position.y)
         rotate(radians(self.theta))
         # cover the edge of cell
-        fill(248, 248, 255)
-        ellipse(0, 0, 9, 9)
+        fill(255, 255, 255)
+        ellipse(0, 0, 15, 15)
         fill(191,239,255)
         ellipse(0, 0 - 12,60,20)
         ellipse(0, 0 + 12,60,20)
